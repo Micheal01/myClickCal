@@ -1,9 +1,8 @@
 package com.ndsc.myClickCal.dao;
 
 import com.ndsc.myClickCal.entity.ArticleStatistics;
-import org.springframework.data.jpa.repository.Query;
+import com.ndsc.myClickCal.entity.ArticleStatisticsIp;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,8 +10,7 @@ import org.springframework.stereotype.Repository;
  * @since 2018-8-28
  */
 @Repository
-public interface ArticleStatisticsDao extends CrudRepository<ArticleStatistics,String>{
+public interface ArticleStatisticsIpDao extends CrudRepository<ArticleStatisticsIp,String>{
 
-        ArticleStatistics findByArticleId(String articleId);
 
 }
