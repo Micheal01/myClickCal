@@ -137,6 +137,61 @@ public class ClickCalController {
 
     }
 
+    @RequestMapping("/getDigit")
+    public BigInteger getDigit(ArticleStatisticsRequest request,
+                                        HttpServletRequest servletRequest)
+    {
+        BigInteger dataResponse;
+        try {
+            if (request == null || StringUtils.isEmpty(request.getId())) {
+                 return BigInteger.valueOf(0);
+            }
+            //校验是否有不合法字符或长度不匹配
+            if (needFilterLawless(request.getId())) {
+                return BigInteger.valueOf(0);
+            }
+            //缓存没数据的话就尝试拉去库里数据
+            pullData();
+
+            //过滤同一个外网ip 同一个稿件
+            if (needFilterIp(servletRequest, request.getId())) {
+                //返回之前访问的数据
+                ArticleStatistics as = getArticleStatistics(request.getId());
+                if (as == null) {
+                    dataResponse=BigInteger.valueOf(1);
+                }
+                else {
+                    //统计量加一
+                    dataResponse=as.getLookNumber().add(BigInteger.valueOf(1));
+                }
+                return dataResponse;
+            }
+
+            //缓存中心有数据
+            ArticleStatistics as = getArticleStatistics(request.getId());
+            if (as == null) {
+                dataResponse=BigInteger.valueOf(1);
+                //加入待保存集合
+                saveData(request.getId(), null,dataResponse, new Date());
+            }
+            else {
+                //统计量加一
+                dataResponse=as.getLookNumber().add(BigInteger.valueOf(1));
+                //加入待保存集合
+                saveData(as.getArticleId(), as.getId(),dataResponse, new Date());
+            }
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return  BigInteger.valueOf(0);
+        }
+        return dataResponse;
+
+    }
+
+
     //校验是否有不合法字符或长度不匹配
     private boolean needFilterLawless(String articleId) {
         if(articleId.length()>32)

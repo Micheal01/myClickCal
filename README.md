@@ -6,7 +6,8 @@
 ###项目启动方法，内置tomcat，且会自动创建表结构
 java -jar myClickCal-1.0.0.jar 
 
-###以下可以自定义配置
+###自定义配置方式一
+###以下配置为系统默认配置
 ###端口号
 --server.port=8999 
 ###驱动
@@ -21,14 +22,20 @@ java -jar myClickCal-1.0.0.jar
 ####参考例子
 java -jar myClickCal-1.0.0.jar --server.port=8999 --spring.datasource.url=jdbc:oracle:thin:@218.92.162.226:1521:orcl --spring.datasource.username=yd_jcms --spring.datasource.password=1
 
+
+###自定义配置方式二
+####用压缩文件打开jar包后进入到"BOOT-INF\class"后然后用记事本打开“application.properties”文件修改配置即可，修改后重启服务就行
+
+
 ####注意事项
 #####如果后台手工改数据库表数据请重启服务，因为后台数据是每一个小时更新一次缓存数据，每十秒批量保存数据
 
 ##客户端调用
 
-###接口地址
+###接口地址1
 ####http://ip:port/queryById?id=xx
 #### id为稿件编号，参数要求长度小于32位，且只能包含- _ 数字或字母
+
 ####返回格式JSON
 {
     "code":"100",
@@ -43,3 +50,9 @@ code代码表
 data实体描述
    articleId 稿件id
    number  访问量
+   
+###接口地址2
+####http://ip:port/getDigit?id=xx
+#### id为稿件编号，参数要求长度小于32位，且只能包含- _ 数字或字母
+
+####返回格式数字。如果出现参数错误或系统错误统一返回0

@@ -15,5 +15,7 @@ public class ArticleStatisticsRequest implements Serializable {
 
     private String id;
 
+    private Integer justReturnDigit;//传1即可
+
 
 }
