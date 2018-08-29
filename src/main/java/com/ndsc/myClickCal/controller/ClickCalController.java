@@ -303,8 +303,8 @@ public class ClickCalController {
             pullData();
         }
         else {
-            //上次更新时间和当前时间比较小于一天得话就过滤
-            if ((System.currentTimeMillis()) - pullDate.getTime() < 60 * 60 * 1000) {
+            //上次更新时间和当前时间比较小于一小时就更新
+            if ((System.currentTimeMillis()) - pullDate.getTime() >60 * 60 * 1000) {
                 pullData();
             }
         }
