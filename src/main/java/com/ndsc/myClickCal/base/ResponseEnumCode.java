@@ -10,8 +10,6 @@ public enum  ResponseEnumCode {
 
     IllegalArgumentException("400","参数异常"),
 
-    NULLException("405",""),
-
     SERVER_EXCEPTION("500","服务异常");
 
     private String code;

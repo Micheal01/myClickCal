@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class ArticleStatisticsRequest implements Serializable {
     private static final long serialVersionUID = 512227171237064974L;
 
-    private String articleId;
+    private String id;
 
 
 }
