@@ -5,7 +5,7 @@
 
 ##启动步骤1
 ###修改配置文件
-####右击文件用压缩文件打开myClickCal-1.0.0.jar包后进入到"BOOT-INF\class"后然后用记事本打开“application.properties”文件后修改配置即可，修改后重启服务就行
+####右击用压缩文件打开myClickCal-1.0.0.jar包后进入到"BOOT-INF\class"后然后用记事本打开“application.properties”文件后修改配置
 
 ##启动步骤2
 ###执行包里面的startup.bat即可
