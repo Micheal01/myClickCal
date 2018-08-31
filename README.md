@@ -8,12 +8,12 @@
 ####右击用压缩文件打开myClickCal-1.0.0.jar包后进入到"BOOT-INF\class"后然后用记事本打开“application.properties”文件后修改配置
 
 ##启动步骤2
-###执行包里面的startup.bat即可
+###执行包里面的startup.bat即可，里面的表会自动生成
 
 ###注意事项
 ####如果后台手工改数据库表数据请重启服务，因为后台数据是每一个小时更新一次缓存数据，每十秒批量保存数据
 
-##统计表说明
+##统计表说明    
 表名【TJ_ARTICLE】
 字段描述
 ARTICLE_ID   文章id
