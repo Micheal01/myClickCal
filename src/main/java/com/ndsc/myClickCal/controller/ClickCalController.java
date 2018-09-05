@@ -103,7 +103,6 @@ public class ClickCalController {
                     statisticsResponse.setNumber(BigInteger.valueOf(1));
                 }
                 else {
-                    //统计量加一
                     statisticsResponse.setArticleId(as.getArticleId());
                     statisticsResponse.setNumber(as.getLookNumber());
                 }
@@ -117,14 +116,14 @@ public class ClickCalController {
                 statisticsResponse.setArticleId(request.getId());
                 statisticsResponse.setNumber(BigInteger.valueOf(1));
                 //加入待保存集合
-                saveData(request.getId(), null,statisticsResponse.getNumber(), new Date());
+                saveData(request.getId(), null,statisticsResponse.getNumber());
             }
             else {
                 //统计量加一
                 statisticsResponse.setArticleId(as.getArticleId());
                 statisticsResponse.setNumber(as.getLookNumber().add(BigInteger.valueOf(1)));
                 //加入待保存集合
-                saveData(as.getArticleId(), as.getId(),statisticsResponse.getNumber(), new Date());
+                saveData(as.getArticleId(), as.getId(),statisticsResponse.getNumber());
             }
             dataResponse.success(statisticsResponse);
 
@@ -172,13 +171,13 @@ public class ClickCalController {
             if (as == null) {
                 dataResponse=BigInteger.valueOf(1);
                 //加入待保存集合
-                saveData(request.getId(), null,dataResponse, new Date());
+                saveData(request.getId(), null,dataResponse);
             }
             else {
                 //统计量加一
                 dataResponse=as.getLookNumber().add(BigInteger.valueOf(1));
                 //加入待保存集合
-                saveData(as.getArticleId(), as.getId(),dataResponse, new Date());
+                saveData(as.getArticleId(), as.getId(),dataResponse);
             }
 
         }
@@ -214,19 +213,35 @@ public class ClickCalController {
     }
 
     //数据
-    private void saveData(String articleId, String id,BigInteger number, Date date)
+    private void saveData(String articleId, String id,BigInteger number)
     {
-        ArticleStatistics as_data=new ArticleStatistics();
+        ArticleStatistics  as_data=new ArticleStatistics();
         as_data.setId(id);
         as_data.setArticleId(articleId);
         as_data.setLookNumber(number);
         as_data.setUpdateDate(new Date());
-        //加入数据缓存中心
-        DATA_CENTER.add(as_data);
-        //允许保存数据
-        isNeedSave=true;
         //加入待保存的数据集合
         needSaveData.add(as_data);
+
+        if(StringUtils.isEmpty(id))
+        {
+            //加入数据缓存中心
+            DATA_CENTER.add(as_data);
+        }
+        else
+        {
+            //修改缓存
+            for (ArticleStatistics asi:DATA_CENTER) {
+                if(id.equals(asi.getId()))
+                {
+                    //更新数据缓存中心
+                    asi.setUpdateDate(new Date());
+                    asi.setLookNumber(number);
+                }
+            }
+        }
+        //允许保存数据
+        isNeedSave=true;
     }
 
 
@@ -277,7 +292,7 @@ public class ClickCalController {
     private ArticleStatistics getArticleStatistics(String articleId)
     {
         for (ArticleStatistics asi:DATA_CENTER) {
-            if(articleId.equals(asi.getArticleId())&&articleId.equals(asi.getArticleId()))
+            if(articleId.equals(asi.getArticleId()))
             {
                 return asi;
             }
@@ -352,18 +367,11 @@ public class ClickCalController {
         }
 
 
-        //更新本地缓存数据，1个小时执行一次
+        //更新本地缓存数据
         if(pullDate==null)
         {
             pullData();
         }
-        else {
-            //上次更新时间和当前时间比较大于一小时就更新
-            if ((System.currentTimeMillis()) - pullDate.getTime() >60 * 60 * 1000) {
-                pullData();
-            }
-        }
-
     }
 
 }
